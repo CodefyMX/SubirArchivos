@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewBag.Title = "SubirArchivoAjax";
+}
+<style>
+    #status {
+        margin-top: 50px;
+        padding: 10px;
+        color: green;
+        background-color: black;
+    }
+</style>
+<form action="/Home/SubirArchivoAjax" id="subirForm" enctype="multipart/form-data" method="post">
+    <h3>Subir archivo con AJAX</h3>
+    
+    <input type="text" class="form-control" id="carpeta" placeholder="imagenes" value="" />
+
+    <input type="file" id="archivo" name="archivo" />
+    <br/>
+    <img src="https://placeimg.com/100/100/any" id="img" width="100" height="100" alt="Alternate Text" />
+    <br/>
+    <br />
+    <button class="btn btn-success">Subir</button>
+    
+    <div id="status"></div>
+</form>
+
+
+@section Scripts{
+    <script>
+        (function () {
+            var status = $('#status');
+            var form = $("#subirForm");
+            form.on("submit",function(e) {
+                e.preventDefault();
+                var data = new FormData();
+                data.append('file', $("#archivo")[0].files[0]);
+                var url = $(this).attr("action");
+                var carpeta = $("#carpeta").val();            
+                if (carpeta !== "") {
+                    url = url + "?carpeta=" + carpeta;
+                }
+                $.ajax({
+                    url: url,
+                    data: data,
+                    method: "POST",
+                    processData: false,  // tell jQuery not to process the data
+                    contentType: false,  // tell jQuery not to set contentType
+                    success :function(data) {
+                        console.log(data);
+                        $("#img").attr("src", data.CarpetaRelativa);
+                    },
+                    complete: function(xhr) {
+                        status.html(xhr.responseText);
+                    }
+                });
+            });
+
+        })();
+    </script>
+}

@@ -1,0 +1,10 @@
+﻿
+@{
+    ViewBag.Title = "SubirArchivo";
+}
+<form action="/Home/SubirArchivo" enctype="multipart/form-data" method="post">
+    <h3>Subir archivo con POSTBACK</h3>
+    <input type="file" name="archivo"/>
+    <br/>
+    <button class="btn btn-success">Subir</button>
+</form>
